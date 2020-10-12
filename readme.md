@@ -1,6 +1,6 @@
 # VOX FILE PARSER
 
-Reads in a .vox file and creates a data structure.  Can handle files created with the latest version of Magicavoxel.
+Reads in a .vox file and creates a data structure.  Can handle files created with the latest version of Magicavoxel, i.e. can handle very large multi-model scenes.
 
 Usage:
 ```Java
@@ -9,12 +9,15 @@ Usage:
 			VoxRootChunk voxFile = reader.read();
 			
 			for (VoxModelInstance model_instance : voxFile.getModelInstances()) {
+				GridPoint3 world_Offset = model_instance.world_offset;
 				VoxModelBlueprint model = model_instance.model;
-					for (Voxel voxel : model.getVoxels()) {
-						int x = voxel.getPosition().x;
-						int y = voxel.getPosition().y;
-						int z = voxel.getPosition().z;
-					}
+				for (Voxel voxel : model.getVoxels()) {
+					int x = world_Offset.x + voxel.getPosition().x;
+					int y = world_Offset.y + voxel.getPosition().y;
+					int z = world_Offset.z + voxel.getPosition().z;
+					
+					// Do stuff with the data 
+				}
 			}
 
 		}
@@ -23,12 +26,11 @@ Usage:
 
 ## Notes
 * Any "rotation" settings are ignored.
-* The following chunk types are ignored: rOBJ, rCAM, NOTE
 * Magicavoxel treats the Z axis as up/down.
 
 
 ## Licence
-MIT Licence.  See included files.
+MIT Licence.  See included LICENCE file.
 
 
 ## Credits
