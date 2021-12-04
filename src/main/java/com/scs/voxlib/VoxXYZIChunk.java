@@ -13,7 +13,9 @@ public final class VoxXYZIChunk extends VoxChunk {
         voxels = new Voxel[voxelCount];
 
         for (int i = 0; i < voxelCount; i++) {
-            voxels[i] = new Voxel(StreamUtils.readVector3b(stream), (byte)stream.read());
+            var position = StreamUtils.readVector3b(stream);
+            var colorIndex = (byte) ((byte)stream.read() & 0xff);
+            voxels[i] = new Voxel(position, colorIndex);
         }
     }
 

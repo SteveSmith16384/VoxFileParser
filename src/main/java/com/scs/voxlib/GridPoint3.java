@@ -40,4 +40,9 @@ public class GridPoint3 {
 		z += point.z;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%d, %d, %d)", x, y, z);
+	}
+
 }
