@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.scs'
-version '1.0-SNAPSHOT'
+version '0.2'
 
 sourceCompatibility = 1.10
 targetCompatibility = 1.10
