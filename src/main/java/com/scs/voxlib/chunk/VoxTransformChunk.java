@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-public class VoxTransformChunk extends VoxChunk {
+public final class VoxTransformChunk extends VoxChunk {
 
 	public int id;
 	public int child_node_id;

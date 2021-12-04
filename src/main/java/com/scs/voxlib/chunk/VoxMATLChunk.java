@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-final class VoxMATLChunk extends VoxChunk {
+public final class VoxMATLChunk extends VoxChunk {
 	
     private final VoxMaterial material;
 

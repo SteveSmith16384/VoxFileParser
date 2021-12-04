@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VoxGroupChunk extends VoxChunk {
+public final class VoxGroupChunk extends VoxChunk {
 	
 	public int id;
 	public List<Integer> child_ids = new ArrayList<Integer>();

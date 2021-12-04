@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VoxShapeChunk extends VoxChunk {
+public final class VoxShapeChunk extends VoxChunk {
 	
 	public int id;
 	public List<Integer> model_ids = new ArrayList<Integer>();
