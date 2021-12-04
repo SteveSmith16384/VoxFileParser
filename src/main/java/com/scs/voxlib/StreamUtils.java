@@ -2,12 +2,15 @@ package com.scs.voxlib;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 public final class StreamUtils {
-	
+
 	public static int readIntLE(InputStream stream) throws IOException {
         byte[] bytes = new byte[4];
         if (stream.read(bytes) != 4) {
@@ -71,5 +74,40 @@ public final class StreamUtils {
         }
 
         return dict;
+    }
+
+
+    // ======================= WRITE METHODS =======================
+
+    public static void writeIntLE(int v, OutputStream stream) throws IOException {
+        stream.write(
+            ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(v).array()
+        );
+    }
+    
+    public static void writeVector3i(GridPoint3 v, OutputStream stream) throws IOException {
+        writeIntLE(v.x, stream);
+        writeIntLE(v.y, stream);
+        writeIntLE(v.z, stream);
+    }
+
+    public static void writeVector3b(GridPoint3 v, OutputStream stream) throws IOException {
+        stream.write((byte)v.x);
+        stream.write((byte)v.y);
+        stream.write((byte)v.z);
+    }
+
+    public static void writeString(String s, OutputStream stream) throws IOException {
+        writeIntLE(s.length(), stream);
+        stream.write(s.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static void writeDictionary(Map<String, String> dict, OutputStream stream) throws IOException {
+        writeIntLE(dict.size(), stream);
+
+        for (var entry : dict.entrySet()) {
+            writeString(entry.getKey(), stream);
+            writeString(entry.getValue(), stream);
+        }
     }
 }

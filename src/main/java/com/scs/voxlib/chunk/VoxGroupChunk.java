@@ -4,6 +4,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,5 +34,11 @@ public class VoxGroupChunk extends VoxChunk {
         return chunk;
     }
 
-
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        StreamUtils.writeIntLE(id, stream);
+        StreamUtils.writeIntLE(0, stream); // dict
+        StreamUtils.writeIntLE(child_ids.size(), stream);
+        for (var childId : child_ids) StreamUtils.writeIntLE(childId, stream);
+    }
 }

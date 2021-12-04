@@ -4,6 +4,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 final class VoxRGBAChunk extends VoxChunk {
 	
@@ -73,10 +74,26 @@ final class VoxRGBAChunk extends VoxChunk {
     }
 
     private static int ABGRToARGB(int abgr) {
-        int alphaChannel = (abgr & 0xFF000000) >> 24;
-        int blueChannel = (abgr & 0xFF0000) >> 16;
-        int greenChannel = (abgr & 0xFF00) >> 8;
-        int redChannel = (abgr & 0xFF);
-        return (blueChannel) | (greenChannel << 8) | (redChannel << 16) | (alphaChannel << 24);
+        int alpha = (abgr & 0xFF000000) >> 24;
+        int blue = (abgr & 0xFF0000) >> 16;
+        int green = (abgr & 0xFF00) >> 8;
+        int red = (abgr & 0xFF);
+        return (blue) | (green << 8) | (red << 16) | (alpha << 24);
+    }
+
+    private static int ARGBToABGR(int argb) {
+        int alpha = (argb & 0xFF000000) >> 24;
+        int red = (argb & 0xFF0000) >> 16;
+        int green = (argb & 0xFF00) >> 8;
+        int blue = (argb & 0xFF);
+        return (red) | (green << 8) | (blue << 16) | (alpha << 24);
+    }
+
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        for (int i = 0; i < 255; i++) {
+            var abgr = ARGBToABGR(palette[i + 1]);
+            StreamUtils.writeIntLE(abgr, stream);
+        }
     }
 }

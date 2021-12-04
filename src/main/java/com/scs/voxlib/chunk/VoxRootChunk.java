@@ -6,6 +6,7 @@ import com.scs.voxlib.mat.VoxOldMaterial;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public final class VoxRootChunk extends VoxChunk {
 	private final HashMap<Integer, VoxTransformChunk> transformChunks = new HashMap<Integer, VoxTransformChunk>();
 	private final HashMap<Integer, VoxGroupChunk> groupChunks = new HashMap<Integer, VoxGroupChunk>();
 	private VoxTransformChunk root_transform;
+	private List<VoxChunk> children = new ArrayList<>();
 
 	public VoxRootChunk(String type) {
 		super(type);
@@ -48,12 +50,14 @@ public final class VoxRootChunk extends VoxChunk {
 			} else {
 				chunk1 = VoxChunk.readChunk(childrenStream);//, "SIZE");
 			}
+			root.children.add(chunk1);
 
 			if (chunk1 instanceof VoxSizeChunk) {
 				VoxSizeChunk size = (VoxSizeChunk) chunk1;
 
 				VoxChunk chunk2 = VoxChunk.readChunk(childrenStream, "XYZI");
 				VoxXYZIChunk xyzi = (VoxXYZIChunk)chunk2;
+				root.children.add(chunk2);
 
 				//if (xyzi.getVoxels().length > 0) { No!  As it throws out all the model IDs
 				root.models.put(
@@ -185,5 +189,12 @@ public final class VoxRootChunk extends VoxChunk {
 		}
 	}
 
-
+	@Override
+	protected void writeChildren(OutputStream stream) throws IOException {
+		for (var chunk : children) {
+			if (ChunkFactory.supportedTypes.contains(chunk.getType())) {
+				chunk.writeTo(stream);
+			}
+		}
+	}
 }

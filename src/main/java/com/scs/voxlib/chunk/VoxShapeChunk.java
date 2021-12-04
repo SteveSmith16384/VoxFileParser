@@ -4,6 +4,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class VoxShapeChunk extends VoxChunk {
     public static VoxShapeChunk read(String type, InputStream stream) throws IOException {
         var chunk = new VoxShapeChunk(type);
         chunk.id = StreamUtils.readIntLE(stream);
-        
+
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {
     		Settings.p("dict=" + dict);
@@ -40,4 +41,14 @@ public class VoxShapeChunk extends VoxChunk {
         return chunk;
 	}
 
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        StreamUtils.writeIntLE(id, stream);
+        StreamUtils.writeIntLE(0, stream); // dict
+        StreamUtils.writeIntLE(model_ids.size(), stream);
+        for (var modelId : model_ids) {
+            StreamUtils.writeIntLE(modelId, stream);
+            StreamUtils.writeIntLE(0, stream); // dict
+        }
+    }
 }

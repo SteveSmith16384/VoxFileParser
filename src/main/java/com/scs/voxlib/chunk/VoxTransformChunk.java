@@ -5,6 +5,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class VoxTransformChunk extends VoxChunk {
@@ -48,13 +49,29 @@ public class VoxTransformChunk extends VoxChunk {
 		}
 		return chunk;
 	}
-	
 
 	@Override
 	public String toString() {
 		return "VoxTransformChunk#" + id + "_" + this.transform;
 	}
-	
+
+	@Override
+	protected void writeContent(OutputStream stream) throws IOException {
+		StreamUtils.writeIntLE(id, stream);
+		StreamUtils.writeIntLE(0, stream); // dict
+		StreamUtils.writeIntLE(child_node_id, stream);
+		StreamUtils.writeIntLE(-1, stream); // neg
+		StreamUtils.writeIntLE(0, stream); // layer_id
+		if (transform.x != 0 || transform.y != 0 || transform.z != 0) {
+			StreamUtils.writeIntLE(1, stream); // frames
+			var rot = new HashMap<String, String>();
+			rot.put("_t", String.format("%d %d %d", transform.x, transform.y, transform.z));
+			StreamUtils.writeDictionary(rot, stream);
+		} else {
+			StreamUtils.writeIntLE(0, stream); // frames
+		}
+
+	}
 }
 
 

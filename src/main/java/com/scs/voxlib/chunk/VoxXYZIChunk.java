@@ -5,6 +5,7 @@ import com.scs.voxlib.Voxel;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 public final class VoxXYZIChunk extends VoxChunk {
 	
@@ -31,5 +32,13 @@ public final class VoxXYZIChunk extends VoxChunk {
     public Voxel[] getVoxels() {
         return voxels;
     }
-    
+
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        StreamUtils.writeIntLE(voxels.length, stream);
+        for (var voxel : voxels) {
+            StreamUtils.writeVector3b(voxel.getPosition(), stream);
+            stream.write(voxel.getColourIndex());
+        }
+    }
 }

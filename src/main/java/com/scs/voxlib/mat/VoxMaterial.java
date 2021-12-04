@@ -1,6 +1,7 @@
 package com.scs.voxlib.mat;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -20,6 +21,10 @@ public final class VoxMaterial {
 
     public int getID() {
         return id;
+    }
+
+    public Map<String, String> getProps() {
+        return properties;
     }
 
     public Optional<String> getString(String property) {

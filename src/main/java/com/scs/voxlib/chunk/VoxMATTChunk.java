@@ -52,4 +52,6 @@ final class VoxMATTChunk extends VoxChunk {
     public VoxOldMaterial getMaterial() {
         return material;
     }
+
+    //TODO: write old material, if necessary
 }

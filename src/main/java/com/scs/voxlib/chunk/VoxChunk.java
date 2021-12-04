@@ -3,10 +3,7 @@ package com.scs.voxlib.chunk;
 import com.scs.voxlib.InvalidVoxException;
 import com.scs.voxlib.StreamUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 public abstract class VoxChunk {
@@ -49,7 +46,7 @@ public abstract class VoxChunk {
 		byte[] chunkBytes = new byte[length];
 		byte[] childrenChunkBytes = new byte[childrenLength];
 
-		if (stream.read(chunkBytes) != length) {
+		if (length > 0 && stream.read(chunkBytes) != length) {
 			throw new InvalidVoxException("Chunk \"" + id + "\" is incomplete");
 		}
 
@@ -62,8 +59,28 @@ public abstract class VoxChunk {
 		}
 	}
 
-	public static void writeChunk(OutputStream stream, VoxChunk chunk) throws IOException {
-		stream.write(chunk.type.getBytes(StandardCharsets.UTF_8));
-		//TODO write the entire chunk
+	public final void writeTo(OutputStream stream) throws IOException {
+		try (
+			var contentStream = new ByteArrayOutputStream();
+			var childStream = new ByteArrayOutputStream();
+		) {
+			stream.write(type.getBytes(StandardCharsets.UTF_8));
+			writeContent(contentStream);
+			var contentBytes = contentStream.toByteArray();
+
+			writeChildren(childStream);
+			var childBytes = childStream.toByteArray();
+
+			StreamUtils.writeIntLE(contentBytes.length, stream);
+			StreamUtils.writeIntLE(childBytes.length, stream);
+			stream.write(contentBytes);
+			stream.write(childBytes);
+		}
 	}
+
+	/** Write to the stream the content directly associated with this chunk. */
+	protected void writeContent(OutputStream stream) throws IOException {}
+
+	/** Write to the stream the content associated with this chunk's children. */
+	protected void writeChildren(OutputStream stream) throws IOException {}
 }

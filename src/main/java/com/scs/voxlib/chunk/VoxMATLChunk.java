@@ -5,6 +5,7 @@ import com.scs.voxlib.mat.VoxMaterial;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 final class VoxMATLChunk extends VoxChunk {
@@ -25,5 +26,11 @@ final class VoxMATLChunk extends VoxChunk {
 
     public VoxMaterial getMaterial() {
         return material;
+    }
+
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        StreamUtils.writeIntLE(material.getID(), stream);
+        StreamUtils.writeDictionary(material.getProps(), stream);
     }
 }

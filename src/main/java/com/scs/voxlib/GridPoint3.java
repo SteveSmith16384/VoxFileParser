@@ -1,5 +1,7 @@
 package com.scs.voxlib;
 
+import java.util.Objects;
+
 public class GridPoint3 {
 
 	public int x, y, z;
@@ -38,6 +40,19 @@ public class GridPoint3 {
 		x += point.x;
 		y += point.y;
 		z += point.z;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		GridPoint3 that = (GridPoint3) o;
+		return x == that.x && y == that.y && z == that.z;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(x, y, z);
 	}
 
 	@Override

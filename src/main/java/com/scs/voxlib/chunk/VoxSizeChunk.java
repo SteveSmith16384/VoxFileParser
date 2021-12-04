@@ -5,6 +5,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 final class VoxSizeChunk extends VoxChunk {
 	
@@ -23,5 +24,10 @@ final class VoxSizeChunk extends VoxChunk {
 
     public GridPoint3 getSize() {
         return size;
+    }
+
+    @Override
+    protected void writeContent(OutputStream stream) throws IOException {
+        StreamUtils.writeVector3i(size, stream);
     }
 }

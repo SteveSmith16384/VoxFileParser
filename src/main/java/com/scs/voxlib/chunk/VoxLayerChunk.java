@@ -5,6 +5,7 @@ import com.scs.voxlib.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class VoxLayerChunk extends VoxChunk {
@@ -21,7 +22,6 @@ public class VoxLayerChunk extends VoxChunk {
 		throws IOException
 	{
 		var chunk = new VoxLayerChunk(type);
-		//TODO implement VoxLayerChunk
 		chunk.id = StreamUtils.readIntLE(stream);
 		HashMap<String, String> dict = StreamUtils.readDictionary(stream);
 		//Settings.p("dict=" + dict);
@@ -36,7 +36,13 @@ public class VoxLayerChunk extends VoxChunk {
 	public String toString() {
 		return "VoxLayerChunk#" + id + "_" + this.transform;
 	}
-	
+
+	@Override
+	protected void writeContent(OutputStream stream) throws IOException {
+		StreamUtils.writeIntLE(id, stream);
+		StreamUtils.writeIntLE(0, stream); // dict
+		StreamUtils.writeIntLE(0, stream); // reserved
+	}
 }
 
 
