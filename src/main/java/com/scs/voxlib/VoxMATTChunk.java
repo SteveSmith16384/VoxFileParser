@@ -8,10 +8,15 @@ final class VoxMATTChunk extends VoxChunk {
 	
     private final VoxOldMaterial material;
 
-    public VoxMATTChunk(InputStream stream) throws IOException {
+    public VoxMATTChunk(String type, VoxOldMaterial material) {
+        super(type);
+        this.material = material;
+    }
+
+    public static VoxMATTChunk read(String type, InputStream stream) throws IOException {
         int id = StreamUtils.readIntLE(stream);
         int typeIndex = StreamUtils.readIntLE(stream);
-        VoxOldMaterialType type = VoxOldMaterialType.fromIndex(typeIndex)
+        VoxOldMaterialType matType = VoxOldMaterialType.fromIndex(typeIndex)
             .orElseThrow(() -> new InvalidVoxException("Unknown material type " + typeIndex));
         float weight = StreamUtils.readFloatLE(stream);
         int propBits = StreamUtils.readIntLE(stream);
@@ -32,7 +37,8 @@ final class VoxMATTChunk extends VoxChunk {
         }
 
         try {
-            this.material = new VoxOldMaterial(id, weight, type, properties, isTotalPower);
+            var material = new VoxOldMaterial(id, weight, matType, properties, isTotalPower);
+            return new VoxMATTChunk(type, material);
         } catch (IllegalArgumentException e) {
             throw new InvalidVoxException("Material with ID " + id + " is invalid", e);
         }

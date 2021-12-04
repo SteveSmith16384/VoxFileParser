@@ -10,9 +10,14 @@ public class VoxShapeChunk extends VoxChunk {
 	
 	public int id;
 	public List<Integer> model_ids = new ArrayList<Integer>();
-	
-	public VoxShapeChunk(InputStream stream) throws IOException {
-        id = StreamUtils.readIntLE(stream);
+
+    public VoxShapeChunk(String type) {
+        super(type);
+    }
+
+    public static VoxShapeChunk read(String type, InputStream stream) throws IOException {
+        var chunk = new VoxShapeChunk(type);
+        chunk.id = StreamUtils.readIntLE(stream);
         
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {
@@ -28,8 +33,9 @@ public class VoxShapeChunk extends VoxChunk {
         		Settings.p("model_dict=" + dict);
             }*/
 
-            model_ids.add(model_id);
+            chunk.model_ids.add(model_id);
         }
+        return chunk;
 	}
 
 }

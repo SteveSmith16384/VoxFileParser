@@ -6,8 +6,9 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 public class VoxReader implements Closeable {
-	
-    private static final byte[] MAGIC_BYTES = new byte[] {
+	protected static final int VERSION = 150;
+
+    protected static final byte[] MAGIC_BYTES = new byte[] {
         (byte)'V', (byte)'O', (byte)'X', (byte)' '
     };
 
@@ -33,8 +34,10 @@ public class VoxReader implements Closeable {
 
         int fileVersion = StreamUtils.readIntLE(stream);
 
-        if (fileVersion < 150) {
-            throw new InvalidVoxException("Vox versions older than 150 are not supported");
+        if (fileVersion < VERSION) {
+            throw new InvalidVoxException(
+                String.format("Vox versions older than %d are not supported", VERSION)
+            );
         }
 
         VoxChunk chunk = VoxChunk.readChunk(stream);

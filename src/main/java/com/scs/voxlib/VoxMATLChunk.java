@@ -8,10 +8,16 @@ final class VoxMATLChunk extends VoxChunk {
 	
     private final VoxMaterial material;
 
-    public VoxMATLChunk(InputStream stream) throws IOException {
+    public VoxMATLChunk(String type, VoxMaterial material) {
+        super(type);
+        this.material = material;
+    }
+
+    public static VoxMATLChunk read(String type, InputStream stream) throws IOException {
         int id = StreamUtils.readIntLE(stream);
         HashMap<String, String> props = StreamUtils.readDictionary(stream);
-        material = new VoxMaterial(id, props);
+        var material = new VoxMaterial(id, props);
+        return new VoxMATLChunk(type, material);
     }
 
     public VoxMaterial getMaterial() {

@@ -8,9 +8,9 @@ import java.util.List;
 
 public final class VoxRootChunk extends VoxChunk {
 
-	private final HashMap<Integer, VoxModelBlueprint> models;
-	private final List<VoxModelInstance> model_instances;
-	private final int[] palette;
+	private final HashMap<Integer, VoxModelBlueprint> models = new HashMap<>();
+	private final List<VoxModelInstance> model_instances = new ArrayList<>();
+	private int[] palette = VoxRGBAChunk.DEFAULT_PALETTE;
 	private final HashMap<Integer, VoxMaterial> materials = new HashMap<>();
 	private final HashMap<Integer, VoxOldMaterial> oldMaterials = new HashMap<>();
 	private final HashMap<Integer, VoxShapeChunk> shapeChunks = new HashMap<Integer, VoxShapeChunk>();
@@ -18,7 +18,13 @@ public final class VoxRootChunk extends VoxChunk {
 	private final HashMap<Integer, VoxGroupChunk> groupChunks = new HashMap<Integer, VoxGroupChunk>();
 	private VoxTransformChunk root_transform;
 
-	public VoxRootChunk(InputStream stream, InputStream childrenStream) throws IOException {		
+	public VoxRootChunk(String type) {
+		super(type);
+	}
+
+
+	public static VoxRootChunk read(String type, InputStream stream, InputStream childrenStream) throws IOException {
+		var root = new VoxRootChunk(type);
 		VoxChunk first = VoxChunk.readChunk(childrenStream);
 
 		if (first instanceof VoxPackChunk) {
@@ -26,10 +32,6 @@ public final class VoxRootChunk extends VoxChunk {
 			//modelCount = pack.getModelCount(); // Ignore this, it is obsolete
 			first = null;
 		}
-
-		models = new HashMap<Integer, VoxModelBlueprint>();
-		model_instances = new ArrayList<VoxModelInstance>();
-		int[] pal = VoxRGBAChunk.DEFAULT_PALETTE;
 
 		while (childrenStream.available() > 0) {
 			VoxChunk chunk1;
@@ -50,20 +52,22 @@ public final class VoxRootChunk extends VoxChunk {
 				VoxXYZIChunk xyzi = (VoxXYZIChunk)chunk2;
 
 				//if (xyzi.getVoxels().length > 0) { No!  As it throws out all the model IDs
-				models.put(models.size(), new VoxModelBlueprint(models.size(), size.getSize(), xyzi.getVoxels()));
+				root.models.put(
+					root.models.size(),
+					new VoxModelBlueprint(root.models.size(), size.getSize(), xyzi.getVoxels())
+				);
 				//}
 			} else if (chunk1 instanceof VoxRGBAChunk) {
 				VoxRGBAChunk rgba = (VoxRGBAChunk)chunk1;
-				pal = rgba.getPalette();
+				root.palette = rgba.getPalette();
 			} else {
-				processChunk(chunk1);
+				root.processChunk(chunk1);
 			}
 		}
 
-		palette = pal;
-
 		// Calc world offset by iterating through the scenegraph
-		iterateThruScengraph();
+		root.iterateThruScengraph();
+		return root;
 	}
 
 

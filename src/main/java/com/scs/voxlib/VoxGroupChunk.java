@@ -11,8 +11,13 @@ public class VoxGroupChunk extends VoxChunk {
 	public int id;
 	public List<Integer> child_ids = new ArrayList<Integer>();
 
-    public VoxGroupChunk(InputStream stream) throws IOException {
-        id = StreamUtils.readIntLE(stream);
+    public VoxGroupChunk(String type) {
+        super(type);
+    }
+
+    public static VoxGroupChunk read(String type, InputStream stream) throws IOException {
+        var chunk = new VoxGroupChunk(type);
+        chunk.id = StreamUtils.readIntLE(stream);
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {
     		Settings.p("dict=" + dict);
@@ -21,8 +26,9 @@ public class VoxGroupChunk extends VoxChunk {
 
         for (int i=0 ; i<num_children ; i++) {
             int child_id = StreamUtils.readIntLE(stream);
-            child_ids.add(child_id);
+            chunk.child_ids.add(child_id);
         }
+        return chunk;
     }
 
 

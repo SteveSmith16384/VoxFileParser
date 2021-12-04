@@ -12,6 +12,10 @@ public final class VoxFile {
         this.root = root;
     }
 
+    protected VoxRootChunk getRoot() {
+        return root;
+    }
+
     public List<VoxModelInstance> getModels() {
         return root.getModelInstances();
     }

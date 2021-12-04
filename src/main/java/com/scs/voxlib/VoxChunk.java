@@ -3,8 +3,20 @@ package com.scs.voxlib;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 public abstract class VoxChunk {
+
+	private final String type;
+
+	public String getType() {
+		return type;
+	}
+
+	public VoxChunk(String type) {
+		this.type = type;
+	}
 	
 	public static VoxChunk readChunk(InputStream stream) throws IOException {
 		return readChunk(stream, null);
@@ -45,5 +57,10 @@ public abstract class VoxChunk {
 			VoxChunk chunk = ChunkFactory.createChunk(id, chunkStream, childrenStream);
 			return chunk;
 		}
+	}
+
+	public static void writeChunk(OutputStream stream, VoxChunk chunk) throws IOException {
+		stream.write(chunk.type.getBytes(StandardCharsets.UTF_8));
+		//TODO write the entire chunk
 	}
 }

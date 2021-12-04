@@ -53,11 +53,17 @@ final class VoxRGBAChunk extends VoxChunk {
 
     private final int[] palette = new int[256];
 
-    VoxRGBAChunk(InputStream stream) throws IOException {
+    public VoxRGBAChunk(String type) {
+        super(type);
+    }
+
+    public static VoxRGBAChunk read(String type, InputStream stream) throws IOException {
+        var chunk = new VoxRGBAChunk(type);
         for (int i = 0; i < 255; i++) {
             var abgr = StreamUtils.readIntLE(stream);
-            palette[i + 1] = ABGRToARGB(abgr);
+            chunk.palette[i + 1] = ABGRToARGB(abgr);
         }
+        return chunk;
     }
 
     int[] getPalette() {

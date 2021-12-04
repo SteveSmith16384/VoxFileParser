@@ -5,59 +5,59 @@ import java.io.InputStream;
 
 final class ChunkFactory {
 
-	static VoxChunk createChunk(String id, InputStream stream, InputStream childrenStream) throws IOException {
+	static VoxChunk createChunk(String type, InputStream stream, InputStream childrenStream) throws IOException {
 		VoxChunk chunk = null;
 
-		//Settings.p("Reading type " + id);
+		//Settings.p("Reading type " + type);
 		
-		switch (id) {
+		switch (type) {
 		case "MAIN":
-			chunk = new VoxRootChunk(stream, childrenStream);
+			chunk = VoxRootChunk.read(type, stream, childrenStream);
 			break;
 		case "PACK":
-			chunk = new VoxPackChunk(stream);
+			chunk = VoxPackChunk.read(type, stream);
 			break;
 		case "SIZE":
-			chunk = new VoxSizeChunk(stream);
+			chunk = VoxSizeChunk.read(type, stream);
 			break;
 		case "XYZI":
-			chunk = new VoxXYZIChunk(stream);
+			chunk = VoxXYZIChunk.read(type, stream);
 			break;
 		case "RGBA":
-			chunk = new VoxRGBAChunk(stream);
+			chunk = VoxRGBAChunk.read(type, stream);
 			break;
 		case "MATT": // Obsolete
-			chunk = new VoxMATTChunk(stream);
+			chunk = VoxMATTChunk.read(type, stream);
 			break;
 		case "MATL":
-			chunk = new VoxMATLChunk(stream);
+			chunk = VoxMATLChunk.read(type, stream);
 			break;
 			
 		case "nSHP": // Shape Node Chunk
-			chunk = new VoxShapeChunk(stream);
+			chunk = VoxShapeChunk.read(type, stream);
 			break;
 			
 		case "nTRN": // Transform Node Chunk
-			chunk = new VoxTransformChunk(stream);
+			chunk = VoxTransformChunk.read(type, stream);
 			break;
 
 		case "nGRP": // Group Node Chunk
-			chunk = new VoxGroupChunk(stream);
+			chunk = VoxGroupChunk.read(type, stream);
 			break;
 
 		case "LAYR":
-			chunk = new VoxLayerChunk(stream);
+			chunk = VoxLayerChunk.read(type, stream);
 			break;
 
 			// These chunks are unsupported and simply skipped.
 		case "rOBJ":
 		case "rCAM":
 		case "NOTE":
-			chunk = new VoxDummyChunk();
+			chunk = new VoxDummyChunk(type);
 			break;
 			
 		default:
-			System.out.println("Ignoring " + id);
+			System.out.println("Ignoring " + type);
 		}
 
 		return chunk;
