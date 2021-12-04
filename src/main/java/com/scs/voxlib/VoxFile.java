@@ -11,16 +11,16 @@ public final class VoxFile {
     private final int version;
     private final VoxRootChunk root;
 
-    VoxFile(int version, VoxRootChunk root) {
+    public VoxFile(int version, VoxRootChunk root) {
         this.version = version;
         this.root = root;
     }
 
-    protected VoxRootChunk getRoot() {
+    VoxRootChunk getRoot() {
         return root;
     }
 
-    public List<VoxModelInstance> getModels() {
+    public List<VoxModelInstance> getModelInstances() {
         return root.getModelInstances();
     }
 

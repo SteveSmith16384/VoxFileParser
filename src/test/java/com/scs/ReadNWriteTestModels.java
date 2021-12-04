@@ -3,11 +3,9 @@ package com.scs;
 import com.scs.voxlib.VoxFile;
 import com.scs.voxlib.VoxReader;
 import com.scs.voxlib.VoxWriter;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -44,7 +42,7 @@ public class ReadNWriteTestModels {
 
         assertEquals(fileVersion, file.getVersion());
 
-        var models = file.getModels();
+        var models = file.getModelInstances();
         assertNotNull(models);
         assertNotNull(models.get(0));
         assertEquals(modelCount, models.size());

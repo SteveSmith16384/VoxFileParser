@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 
 public class VoxReader implements Closeable {
-	protected static final int VERSION = 150;
+	public static final int VERSION = 150;
 
     protected static final byte[] MAGIC_BYTES = new byte[] {
         (byte)'V', (byte)'O', (byte)'X', (byte)' '
