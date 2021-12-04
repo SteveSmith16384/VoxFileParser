@@ -28,11 +28,20 @@ final class VoxRGBAChunk extends VoxChunk {
 
     VoxRGBAChunk(InputStream stream) throws IOException {
         for (int i = 0; i < 255; i++) {
-            palette[i + 1] = StreamUtils.readIntLE(stream);
+            var abgr = StreamUtils.readIntLE(stream);
+            palette[i + 1] = ABGRToARGB(abgr);
         }
     }
 
     int[] getPalette() {
         return palette;
+    }
+
+    private static int ABGRToARGB(int abgr) {
+        int alphaChannel = (abgr & 0xFF000000) >> 24;
+        int blueChannel = (abgr & 0xFF0000) >> 16;
+        int greenChannel = (abgr & 0xFF00) >> 8;
+        int redChannel = (abgr & 0xFF);
+        return (blueChannel) | (greenChannel << 8) | (redChannel << 16) | (alphaChannel << 24);
     }
 }
