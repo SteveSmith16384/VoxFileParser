@@ -11,15 +11,15 @@ final class VoxSizeChunk extends VoxChunk {
 	
     private final GridPoint3 size;
 
-    public VoxSizeChunk(String type, GridPoint3 size) {
-        super(type);
+    public VoxSizeChunk(GridPoint3 size) {
+        super(ChunkFactory.SIZE);
         this.size = size;
     }
 
-    public static VoxSizeChunk read(String type, InputStream stream) throws IOException {
+    public static VoxSizeChunk read(InputStream stream) throws IOException {
         var size = StreamUtils.readVector3i(stream);
         //System.out.println("Read size of " + size);
-        return new VoxSizeChunk(type, size);
+        return new VoxSizeChunk(size);
     }
 
     public GridPoint3 getSize() {

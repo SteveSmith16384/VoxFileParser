@@ -13,6 +13,7 @@ public final class ChunkFactory {
 	public static final String XYZI = "XYZI"; 
 	public static final String RGBA = "RGBA"; 
 	public static final String MATL = "MATL"; 
+	public static final String MATT = "MATT"; 
 	public static final String nSHP = "nSHP"; 
 	public static final String nTRN = "nTRN"; 
 	public static final String nGRP = "nGRP"; 
@@ -39,41 +40,41 @@ public final class ChunkFactory {
 		
 		switch (type) {
 		case MAIN:
-			chunk = VoxRootChunk.read(type, stream, childrenStream);
+			chunk = VoxRootChunk.read(stream, childrenStream);
 			break;
 		case PACK:
-			chunk = VoxPackChunk.read(type, stream);
+			chunk = VoxPackChunk.read(stream);
 			break;
 		case SIZE:
-			chunk = VoxSizeChunk.read(type, stream);
+			chunk = VoxSizeChunk.read(stream);
 			break;
 		case XYZI:
-			chunk = VoxXYZIChunk.read(type, stream);
+			chunk = VoxXYZIChunk.read(stream);
 			break;
 		case RGBA:
-			chunk = VoxRGBAChunk.read(type, stream);
+			chunk = VoxRGBAChunk.read(stream);
 			break;
-		case "MATT": // Obsolete
-			chunk = VoxMATTChunk.read(type, stream);
+		case MATT: // Obsolete
+			chunk = VoxMATTChunk.read(stream);
 			break;
 		case MATL:
-			chunk = VoxMATLChunk.read(type, stream);
+			chunk = VoxMATLChunk.read(stream);
 			break;
 			
 		case nSHP: // Shape Node Chunk
-			chunk = VoxShapeChunk.read(type, stream);
+			chunk = VoxShapeChunk.read(stream);
 			break;
 			
 		case nTRN: // Transform Node Chunk
-			chunk = VoxTransformChunk.read(type, stream);
+			chunk = VoxTransformChunk.read(stream);
 			break;
 
 		case nGRP: // Group Node Chunk
-			chunk = VoxGroupChunk.read(type, stream);
+			chunk = VoxGroupChunk.read(stream);
 			break;
 
 		case LAYR:
-			chunk = VoxLayerChunk.read(type, stream);
+			chunk = VoxLayerChunk.read(stream);
 			break;
 
 			// These chunks are unsupported and simply skipped.

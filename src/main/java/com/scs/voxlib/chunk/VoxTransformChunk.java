@@ -14,12 +14,12 @@ public class VoxTransformChunk extends VoxChunk {
 	public int child_node_id;
 	public GridPoint3 transform = new GridPoint3();
 
-	public VoxTransformChunk(String type) {
-		super(type);
+	public VoxTransformChunk() {
+		super(ChunkFactory.nTRN);
 	}
 
-	public static VoxTransformChunk read(String type, InputStream stream) throws IOException {
-		var chunk = new VoxTransformChunk(type);
+	public static VoxTransformChunk read(InputStream stream) throws IOException {
+		var chunk = new VoxTransformChunk();
 		chunk.id = StreamUtils.readIntLE(stream);
 		HashMap<String, String> dict = StreamUtils.readDictionary(stream);
 		/*if (dict.containsKey("_name")) {

@@ -11,14 +11,14 @@ public final class VoxXYZIChunk extends VoxChunk {
 	
     private final Voxel[] voxels;
 
-    public VoxXYZIChunk(String type, int voxelCount) {
-        super(type);
+    public VoxXYZIChunk(int voxelCount) {
+        super(ChunkFactory.XYZI);
         voxels = new Voxel[voxelCount];
     }
 
-    public static VoxXYZIChunk read(String type, InputStream stream) throws IOException {
+    public static VoxXYZIChunk read(InputStream stream) throws IOException {
         int voxelCount = StreamUtils.readIntLE(stream);
-        var chunk = new VoxXYZIChunk(type, voxelCount);
+        var chunk = new VoxXYZIChunk(voxelCount);
         //System.out.println(voxelCount + " voxels");
 
         for (int i = 0; i < voxelCount; i++) {

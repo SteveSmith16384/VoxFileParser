@@ -14,12 +14,12 @@ public class VoxGroupChunk extends VoxChunk {
 	public int id;
 	public List<Integer> child_ids = new ArrayList<Integer>();
 
-    public VoxGroupChunk(String type) {
-        super(type);
+    public VoxGroupChunk() {
+        super(ChunkFactory.nGRP);
     }
 
-    public static VoxGroupChunk read(String type, InputStream stream) throws IOException {
-        var chunk = new VoxGroupChunk(type);
+    public static VoxGroupChunk read(InputStream stream) throws IOException {
+        var chunk = new VoxGroupChunk();
         chunk.id = StreamUtils.readIntLE(stream);
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {

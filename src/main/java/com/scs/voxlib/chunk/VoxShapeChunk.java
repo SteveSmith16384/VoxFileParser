@@ -14,12 +14,12 @@ public class VoxShapeChunk extends VoxChunk {
 	public int id;
 	public List<Integer> model_ids = new ArrayList<Integer>();
 
-    public VoxShapeChunk(String type) {
-        super(type);
+    public VoxShapeChunk() {
+        super(ChunkFactory.nSHP);
     }
 
-    public static VoxShapeChunk read(String type, InputStream stream) throws IOException {
-        var chunk = new VoxShapeChunk(type);
+    public static VoxShapeChunk read(InputStream stream) throws IOException {
+        var chunk = new VoxShapeChunk();
         chunk.id = StreamUtils.readIntLE(stream);
 
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);

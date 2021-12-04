@@ -14,14 +14,14 @@ public class VoxLayerChunk extends VoxChunk {
 	public int child_node_id;
 	public GridPoint3 transform = new GridPoint3();
 
-	public VoxLayerChunk(String type) {
-		super(type);
+	public VoxLayerChunk() {
+		super(ChunkFactory.LAYR);
 	}
 
-	public static VoxLayerChunk read(String type, InputStream stream)
+	public static VoxLayerChunk read(InputStream stream)
 		throws IOException
 	{
-		var chunk = new VoxLayerChunk(type);
+		var chunk = new VoxLayerChunk();
 		chunk.id = StreamUtils.readIntLE(stream);
 		HashMap<String, String> dict = StreamUtils.readDictionary(stream);
 		//Settings.p("dict=" + dict);

@@ -9,14 +9,14 @@ import java.io.OutputStream;
 final class VoxPackChunk extends VoxChunk {
     private final int modelCount;
 
-    public VoxPackChunk(String type, int modelCount) {
-        super(type);
+    public VoxPackChunk(int modelCount) {
+        super(ChunkFactory.PACK);
         this.modelCount = modelCount;
     }
 
-    public static VoxPackChunk read(String type, InputStream stream) throws IOException {
+    public static VoxPackChunk read(InputStream stream) throws IOException {
         var modelCount = StreamUtils.readIntLE(stream);
-        return new VoxPackChunk(type, modelCount);
+        return new VoxPackChunk(modelCount);
     }
 
     int getModelCount() {

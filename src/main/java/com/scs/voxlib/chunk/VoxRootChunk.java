@@ -24,13 +24,13 @@ public final class VoxRootChunk extends VoxChunk {
 	private VoxTransformChunk root_transform;
 	private List<VoxChunk> children = new ArrayList<>();
 
-	public VoxRootChunk(String type) {
-		super(type);
+	public VoxRootChunk() {
+		super(ChunkFactory.MAIN);
 	}
 
 
-	public static VoxRootChunk read(String type, InputStream stream, InputStream childrenStream) throws IOException {
-		var root = new VoxRootChunk(type);
+	public static VoxRootChunk read(InputStream stream, InputStream childrenStream) throws IOException {
+		var root = new VoxRootChunk();
 		VoxChunk first = VoxChunk.readChunk(childrenStream);
 
 		if (first instanceof VoxPackChunk) {
