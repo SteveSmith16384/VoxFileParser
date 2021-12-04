@@ -21,7 +21,7 @@ public class VoxReader implements Closeable {
         this.stream = stream;
     }
 
-    public VoxRootChunk read() throws IOException {
+    public VoxFile read() throws IOException {
         byte[] magicBytes = new byte[4];
         if (stream.read(magicBytes) != 4) {
             throw new InvalidVoxException("Could not read magic bytes");
@@ -47,7 +47,7 @@ public class VoxReader implements Closeable {
             throw new InvalidVoxException("First chunk is not of ID \"MAIN\"");
         }
 
-        return (VoxRootChunk)chunk;
+        return new VoxFile(fileVersion, (VoxRootChunk)chunk);
     }
 
     @Override

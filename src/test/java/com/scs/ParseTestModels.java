@@ -1,38 +1,34 @@
 package com.scs;
 
-import com.scs.voxlib.VoxFile;
-import com.scs.voxlib.VoxModel;
-import com.scs.voxlib.VoxReader;
+import com.scs.voxlib.*;
 import org.junit.Test;
 
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.Assert.*;
 
 public class ParseTestModels {
-    private VoxFile loadVox(String path) throws IOException {
-        try (InputStream stream = getClass().getResourceAsStream(path);
-             VoxReader reader = new VoxReader(stream)) {
+    private VoxFile loadVox(String resourcePath) throws IOException {
+        var fullPath = getClass().getResource(resourcePath).getPath();
+        try (VoxReader reader = new VoxReader(new FileInputStream(fullPath))) {
             return reader.read();
         }
     }
 
     private void testModel(String path, int fileVersion, int modelCount, int voxelCount, int materialCount) throws IOException {
-        VoxFile file = loadVox(path);
+        var file = loadVox(path);
         assertEquals(fileVersion, file.getVersion());
 
-        VoxModel[] models = file.getModels();
+        var models = file.getModels();
         assertNotNull(models);
-        assertNotNull(models[0]);
-        assertEquals(modelCount, models.length);
+        assertNotNull(models.get(0));
+        assertEquals(modelCount, models.size());
 
         int voxelSum = 0;
-
-        for (VoxModel model : models) {
-            voxelSum += model.getVoxels().length;
+        for (var modelInstance : models) {
+            voxelSum += modelInstance.model.getVoxels().length;
         }
-
         assertEquals(voxelCount, voxelSum);
 
         // First colour is always black
@@ -57,7 +53,7 @@ public class ParseTestModels {
     }
 
     @Test
-    public void testMonu10() throws IOException {
-        testModel("/monu10.vox", 150, 1, 150764, 256);
+    public void testMonu2() throws IOException {
+        testModel("/monu2.vox", 150, 1, 150764, 256);
     }
 }

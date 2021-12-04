@@ -6,9 +6,9 @@ Usage:
 ```Java
 
 		try (VoxReader reader = new VoxReader(new FileInputStream(filename))) {
-			VoxRootChunk voxFile = reader.read();
+			VoxFile voxFile = reader.read();
 			
-			for (VoxModelInstance model_instance : voxFile.getModelInstances()) {
+			for (VoxModelInstance model_instance : voxFile.getModels()) {
 				GridPoint3 world_Offset = model_instance.world_offset;
 				VoxModelBlueprint model = model_instance.model;
 				for (Voxel voxel : model.getVoxels()) {
