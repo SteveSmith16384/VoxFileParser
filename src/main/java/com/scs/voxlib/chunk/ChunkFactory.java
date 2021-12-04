@@ -1,11 +1,11 @@
-package com.scs.voxlib;
+package com.scs.voxlib.chunk;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-final class ChunkFactory {
+public final class ChunkFactory {
 
-	static VoxChunk createChunk(String type, InputStream stream, InputStream childrenStream) throws IOException {
+	public static VoxChunk createChunk(String type, InputStream stream, InputStream childrenStream) throws IOException {
 		VoxChunk chunk = null;
 
 		//Settings.p("Reading type " + type);

@@ -1,4 +1,8 @@
-package com.scs.voxlib;
+package com.scs.voxlib.chunk;
+
+import com.scs.voxlib.*;
+import com.scs.voxlib.mat.VoxMaterial;
+import com.scs.voxlib.mat.VoxOldMaterial;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -135,12 +139,12 @@ public final class VoxRootChunk extends VoxChunk {
 	}
 
 
-	HashMap<Integer, VoxMaterial> getMaterials() {
+	public HashMap<Integer, VoxMaterial> getMaterials() {
 		return materials;
 	}
 
 
-	HashMap<Integer, VoxOldMaterial> getOldMaterials() {
+	public HashMap<Integer, VoxOldMaterial> getOldMaterials() {
 		return oldMaterials;
 	}
 

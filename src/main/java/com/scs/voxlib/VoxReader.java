@@ -1,5 +1,8 @@
 package com.scs.voxlib;
 
+import com.scs.voxlib.chunk.VoxChunk;
+import com.scs.voxlib.chunk.VoxRootChunk;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;

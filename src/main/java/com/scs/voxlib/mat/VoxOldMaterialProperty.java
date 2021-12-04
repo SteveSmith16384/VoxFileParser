@@ -1,4 +1,4 @@
-package com.scs.voxlib;
+package com.scs.voxlib.mat;
 
 public enum VoxOldMaterialProperty {
     PLASTIC,
@@ -14,7 +14,7 @@ public enum VoxOldMaterialProperty {
         return 1 << ordinal();
     }
 
-    boolean isSet(int flags) {
+    public boolean isSet(int flags) {
         int flag = flag();
         return (flags & flag) == flag;
     }

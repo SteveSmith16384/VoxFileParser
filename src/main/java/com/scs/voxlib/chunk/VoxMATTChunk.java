@@ -1,4 +1,9 @@
-package com.scs.voxlib;
+package com.scs.voxlib.chunk;
+
+import com.scs.voxlib.*;
+import com.scs.voxlib.mat.VoxOldMaterial;
+import com.scs.voxlib.mat.VoxOldMaterialProperty;
+import com.scs.voxlib.mat.VoxOldMaterialType;
 
 import java.io.IOException;
 import java.io.InputStream;

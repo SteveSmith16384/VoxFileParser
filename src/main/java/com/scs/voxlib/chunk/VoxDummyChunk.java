@@ -1,4 +1,4 @@
-package com.scs.voxlib;
+package com.scs.voxlib.chunk;
 
 final class VoxDummyChunk extends VoxChunk {
 

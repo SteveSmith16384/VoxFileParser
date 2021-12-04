@@ -1,4 +1,7 @@
-package com.scs.voxlib;
+package com.scs.voxlib.chunk;
+
+import com.scs.voxlib.InvalidVoxException;
+import com.scs.voxlib.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -1,5 +1,9 @@
 package com.scs.voxlib;
 
+import com.scs.voxlib.chunk.VoxRootChunk;
+import com.scs.voxlib.mat.VoxMaterial;
+import com.scs.voxlib.mat.VoxOldMaterial;
+
 import java.util.HashMap;
 import java.util.List;
 

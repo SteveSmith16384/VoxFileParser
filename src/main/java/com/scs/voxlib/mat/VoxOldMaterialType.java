@@ -1,4 +1,4 @@
-package com.scs.voxlib;
+package com.scs.voxlib.mat;
 
 import java.util.Optional;
 
