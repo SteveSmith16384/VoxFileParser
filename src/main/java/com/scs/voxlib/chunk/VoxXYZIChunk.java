@@ -6,6 +6,7 @@ import com.scs.voxlib.Voxel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Collection;
 
 public final class VoxXYZIChunk extends VoxChunk {
 	
@@ -14,6 +15,12 @@ public final class VoxXYZIChunk extends VoxChunk {
     public VoxXYZIChunk(int voxelCount) {
         super(ChunkFactory.XYZI);
         voxels = new Voxel[voxelCount];
+    }
+
+    public VoxXYZIChunk(Collection<Voxel> voxels) {
+        super(ChunkFactory.XYZI);
+        this.voxels = new Voxel[voxels.size()];
+        voxels.toArray(this.voxels);
     }
 
     public static VoxXYZIChunk read(InputStream stream) throws IOException {

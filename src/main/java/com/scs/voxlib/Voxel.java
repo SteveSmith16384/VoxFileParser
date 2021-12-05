@@ -12,6 +12,10 @@ public final class Voxel {
         this.colourIndex = colourIndex;
     }
 
+    public Voxel(int x, int y, int z, byte colourIndex) {
+        this(new GridPoint3(x, y, z), colourIndex);
+    }
+
     public GridPoint3 getPosition() {
         return position;
     }

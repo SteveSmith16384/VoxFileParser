@@ -16,6 +16,11 @@ public final class VoxSizeChunk extends VoxChunk {
         this.size = size;
     }
 
+    public VoxSizeChunk(int width, int length, int height) {
+        super(ChunkFactory.SIZE);
+        this.size = new GridPoint3(width, length, height);
+    }
+
     public static VoxSizeChunk read(InputStream stream) throws IOException {
         var size = StreamUtils.readVector3i(stream);
         //System.out.println("Read size of " + size);
