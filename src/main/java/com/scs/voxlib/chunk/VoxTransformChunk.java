@@ -8,19 +8,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 
-public class VoxTransformChunk extends VoxChunk {
+public final class VoxTransformChunk extends VoxChunk {
 
-	public int id;
+	public final int id;
 	public int child_node_id;
 	public GridPoint3 transform = new GridPoint3();
 
-	public VoxTransformChunk() {
+	public VoxTransformChunk(int id) {
 		super(ChunkFactory.nTRN);
+		this.id = id;
 	}
 
 	public static VoxTransformChunk read(InputStream stream) throws IOException {
-		var chunk = new VoxTransformChunk();
-		chunk.id = StreamUtils.readIntLE(stream);
+		var id = StreamUtils.readIntLE(stream);
+		var chunk = new VoxTransformChunk(id);
 		HashMap<String, String> dict = StreamUtils.readDictionary(stream);
 		/*if (dict.containsKey("_name")) {
 			Settings.p("nTrn Name: " + dict.get("_name"));

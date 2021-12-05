@@ -22,7 +22,8 @@ public final class VoxRootChunk extends VoxChunk {
 	private final HashMap<Integer, VoxTransformChunk> transformChunks = new HashMap<Integer, VoxTransformChunk>();
 	private final HashMap<Integer, VoxGroupChunk> groupChunks = new HashMap<Integer, VoxGroupChunk>();
 	private VoxTransformChunk root_transform;
-	private List<VoxChunk> children = new ArrayList<>();
+	private GridPoint3 size;
+	private final List<VoxChunk> children = new ArrayList<>();
 
 	public VoxRootChunk() {
 		super(ChunkFactory.MAIN);
@@ -48,28 +49,13 @@ public final class VoxRootChunk extends VoxChunk {
 				chunk1 = first;
 				first = null;
 			} else {
-				chunk1 = VoxChunk.readChunk(childrenStream);//, "SIZE");
+				chunk1 = VoxChunk.readChunk(childrenStream);
 			}
-			root.children.add(chunk1);
+			root.appendChunk(chunk1);
 
 			if (chunk1 instanceof VoxSizeChunk) {
-				VoxSizeChunk size = (VoxSizeChunk) chunk1;
-
-				VoxChunk chunk2 = VoxChunk.readChunk(childrenStream, "XYZI");
-				VoxXYZIChunk xyzi = (VoxXYZIChunk)chunk2;
-				root.children.add(chunk2);
-
-				//if (xyzi.getVoxels().length > 0) { No!  As it throws out all the model IDs
-				root.models.put(
-					root.models.size(),
-					new VoxModelBlueprint(root.models.size(), size.getSize(), xyzi.getVoxels())
-				);
-				//}
-			} else if (chunk1 instanceof VoxRGBAChunk) {
-				VoxRGBAChunk rgba = (VoxRGBAChunk)chunk1;
-				root.palette = rgba.getPalette();
-			} else {
-				root.processChunk(chunk1);
+				VoxChunk chunk2 = VoxChunk.readChunk(childrenStream, ChunkFactory.XYZI);
+				root.appendChunk(chunk2);
 			}
 		}
 
@@ -78,6 +64,24 @@ public final class VoxRootChunk extends VoxChunk {
 		return root;
 	}
 
+	public void appendChunk(VoxChunk chunk) {
+		children.add(chunk);
+
+		if (chunk instanceof VoxSizeChunk) {
+			this.size = ((VoxSizeChunk) chunk).getSize();
+		} else if (chunk instanceof VoxXYZIChunk) {
+			VoxXYZIChunk xyzi = (VoxXYZIChunk) chunk;
+			models.put(
+				models.size(),
+				new VoxModelBlueprint(models.size(), size, xyzi.getVoxels())
+			);
+		} else if (chunk instanceof VoxRGBAChunk) {
+			VoxRGBAChunk rgba = (VoxRGBAChunk) chunk;
+			palette = rgba.getPalette();
+		} else {
+			processChunk(chunk);
+		}
+	}
 
 	private void processChunk(VoxChunk chunk) {
 		if (chunk instanceof VoxMATLChunk) {

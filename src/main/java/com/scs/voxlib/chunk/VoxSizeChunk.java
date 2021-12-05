@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-final class VoxSizeChunk extends VoxChunk {
+public final class VoxSizeChunk extends VoxChunk {
 	
     private final GridPoint3 size;
 

@@ -9,18 +9,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class VoxShapeChunk extends VoxChunk {
+public final class VoxShapeChunk extends VoxChunk {
 	
-	public int id;
+	public final int id;
 	public List<Integer> model_ids = new ArrayList<Integer>();
 
-    public VoxShapeChunk() {
+    public VoxShapeChunk(int id) {
         super(ChunkFactory.nSHP);
+        this.id = id;
     }
 
     public static VoxShapeChunk read(InputStream stream) throws IOException {
-        var chunk = new VoxShapeChunk();
-        chunk.id = StreamUtils.readIntLE(stream);
+        var id = StreamUtils.readIntLE(stream);
+        var chunk = new VoxShapeChunk(id);
 
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {

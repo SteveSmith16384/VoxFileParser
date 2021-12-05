@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-final class VoxRGBAChunk extends VoxChunk {
+public final class VoxRGBAChunk extends VoxChunk {
 	
     static final int[] DEFAULT_PALETTE = new int[] {
         0x00000000, 0xFFFFFFFF, 0xFFCCFFFF, 0xFF99FFFF, 0xFF66FFFF, 0xFF33FFFF,
@@ -69,7 +69,7 @@ final class VoxRGBAChunk extends VoxChunk {
         return chunk;
     }
 
-    int[] getPalette() {
+    public int[] getPalette() {
         return palette;
     }
 

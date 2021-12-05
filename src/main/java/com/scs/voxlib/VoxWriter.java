@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class VoxWriter implements Closeable {
+    public static final int VERSION = 150;
+
     private final DataOutputStream stream;
 
     public VoxWriter(OutputStream stream) {

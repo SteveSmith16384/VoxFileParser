@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-final class VoxPackChunk extends VoxChunk {
+public final class VoxPackChunk extends VoxChunk {
     private final int modelCount;
 
     public VoxPackChunk(int modelCount) {

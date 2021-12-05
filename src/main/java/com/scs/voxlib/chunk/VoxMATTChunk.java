@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-final class VoxMATTChunk extends VoxChunk {
+public final class VoxMATTChunk extends VoxChunk {
 	
     private final VoxOldMaterial material;
 

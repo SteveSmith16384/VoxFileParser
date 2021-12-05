@@ -20,7 +20,7 @@ public class ParseTestModels {
         var file = loadVox(path);
         assertEquals(fileVersion, file.getVersion());
 
-        var models = file.getModels();
+        var models = file.getModelInstances();
         assertNotNull(models);
         assertNotNull(models.get(0));
         assertEquals(modelCount, models.size());

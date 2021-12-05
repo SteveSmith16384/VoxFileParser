@@ -6,18 +6,18 @@ public class VoxModelInstance {
 	private static int next_id = 0;
 	
 	public final VoxModelBlueprint model;
-	public final GridPoint3 world_offset;
+	public final GridPoint3 worldOffset;
 	
 	public VoxModelInstance(VoxModelBlueprint _model, GridPoint3 _world_offset) {
 		id = next_id++;
 		model = _model;
-		world_offset = _world_offset;
+		worldOffset = _world_offset;
 	}
 	
 	
 	@Override
 	public String toString() {
-		return "ModelInstance#" + id + "_" + this.world_offset;
+		return "ModelInstance#" + id + "_" + this.worldOffset;
 	}
 
 }
