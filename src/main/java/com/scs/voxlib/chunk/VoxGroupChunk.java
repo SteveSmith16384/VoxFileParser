@@ -11,16 +11,17 @@ import java.util.List;
 
 public final class VoxGroupChunk extends VoxChunk {
 	
-	public int id;
+	public final int id;
 	public List<Integer> child_ids = new ArrayList<Integer>();
 
-    public VoxGroupChunk() {
+    public VoxGroupChunk(int id) {
         super(ChunkFactory.nGRP);
+        this.id = id;
     }
 
     public static VoxGroupChunk read(InputStream stream) throws IOException {
-        var chunk = new VoxGroupChunk();
-        chunk.id = StreamUtils.readIntLE(stream);
+        var id = StreamUtils.readIntLE(stream);
+        var chunk = new VoxGroupChunk(id);
         HashMap<String, String> dict = StreamUtils.readDictionary(stream);
         /*if (dict.size() > 0) {
     		Settings.p("dict=" + dict);
