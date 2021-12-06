@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
@@ -21,7 +22,7 @@ public class CreateNewFileTest {
     @Test
     public void testCreateNewFile() throws IOException {
         // Set size of the model
-        var size = new VoxSizeChunk(new GridPoint3(3, 3, 3));
+        var size = new VoxSizeChunk(3, 3, 3);
 
         // Color indices that we'll use. Must be between 1..255.
         final byte ID_GREEN = 1;
@@ -29,17 +30,18 @@ public class CreateNewFileTest {
         final byte ID_RED = 3;
 
         // Set actual ARGB values for our color indices.
-        var palette = new VoxRGBAChunk();
-        palette.getPalette()[ID_GREEN] = 0xFF33CC33;
-        palette.getPalette()[ID_YELLOW] = 0xFFCCCC33;
-        palette.getPalette()[ID_RED] = 0xFFCC3333;
+        var paletteArray = new int[4];
+        paletteArray[ID_GREEN] = 0xFF33CC33;
+        paletteArray[ID_YELLOW] = 0xFFCCCC33;
+        paletteArray[ID_RED] = 0xFFCC3333;
+        var palette = new VoxRGBAChunk(paletteArray);
 
         // Set voxels using the color indices.
-        var model = new VoxXYZIChunk(3);
-        model.getVoxels()[0] = new Voxel(new GridPoint3(1, 1, 0), ID_GREEN);
-        model.getVoxels()[1] = new Voxel(new GridPoint3(1, 1, 1), ID_YELLOW);
-        model.getVoxels()[2] = new Voxel(new GridPoint3(1, 1, 2), ID_RED);
-
+        var voxels = new ArrayList<Voxel>();
+        voxels.add(new Voxel(1, 1, 0, ID_GREEN));
+        voxels.add(new Voxel(1, 1, 1, ID_YELLOW));
+        voxels.add(new Voxel(1, 1, 2, ID_RED));
+        var model = new VoxXYZIChunk(voxels);
 
         // The following chunks are the necessary containers for our model:
         var groupTransform = new VoxTransformChunk(0);
@@ -67,8 +69,8 @@ public class CreateNewFileTest {
         // Write out the file.
         var path = Paths.get("./out/test_file.vox");
         try (
-            var tempFileOut = Files.newOutputStream(path, CREATE, TRUNCATE_EXISTING);
-            var writer = new VoxWriter(tempFileOut)
+            var outputStream = Files.newOutputStream(path, CREATE, TRUNCATE_EXISTING);
+            var writer = new VoxWriter(outputStream)
         ) {
             writer.write(voxFile);
         }

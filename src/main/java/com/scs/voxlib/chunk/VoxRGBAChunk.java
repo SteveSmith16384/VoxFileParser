@@ -60,6 +60,19 @@ public final class VoxRGBAChunk extends VoxChunk {
         super(ChunkFactory.RGBA);
     }
 
+    /**
+     * The provided colour integers must be in the ARGB format, i.e.
+     * the highest 8 bits represent the Alpha channel, and
+     * the lowest 8 bits represent the blue channel.
+     * Valid indices are from 1 to 255; 0 is not used.
+     */
+    public VoxRGBAChunk(int[] palette) {
+        super(ChunkFactory.RGBA);
+        for (int i = 1; i < 256 && i < palette.length; i++) {
+            this.palette[i] = palette[i];
+        }
+    }
+
     public static VoxRGBAChunk read(InputStream stream) throws IOException {
         var chunk = new VoxRGBAChunk();
         for (int i = 0; i < 255; i++) {
@@ -69,6 +82,12 @@ public final class VoxRGBAChunk extends VoxChunk {
         return chunk;
     }
 
+    /**
+     * The returned colour integers are in the ARGB format, i.e.
+     * the highest 8 bits represent the Alpha channel, and
+     * the lowest 8 bits represent the blue channel.
+     * Valid indices are from 1 to 255; 0 is not used.
+     */
     public int[] getPalette() {
         return palette;
     }
